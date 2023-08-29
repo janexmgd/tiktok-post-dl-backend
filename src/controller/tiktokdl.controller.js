@@ -63,8 +63,6 @@ const tiktokdlController = {
       } else {
         throw new Error('need list of file');
       }
-
-      console.log(`success remove ${filePath}`);
     } catch (error) {
       return failed(res, {
         code: error.code || 500,
