@@ -1,6 +1,5 @@
 import response from '../helper/response.js';
 import parsers from '../helper/parser.js';
-import fs from 'fs';
 import GoogleDrive from '../helper/googleDrive.js';
 const { uploadGD, readerGD, deleteGD } = GoogleDrive;
 const { success, failed } = response;
@@ -27,11 +26,14 @@ const tiktokdlController = {
   },
   multi: async (req, res, next) => {
     try {
-      const fileatGD = await uploadGD(req.file);
-      console.log(fileatGD.fileId);
-      const listFromGD = await readerGD(fileatGD.fileId);
-      const urlListSplit = listFromGD.split('\n');
       if (req.file) {
+        const fileatGD = await uploadGD(req.file);
+        // console.log(fileatGD.fileId);
+        const listFromGD = await readerGD(fileatGD.fileId);
+        if (!listFromGD.split('\n')) {
+          throw new Error('invalid list format');
+        }
+        const urlListSplit = listFromGD.split('\n');
         const urlList = [];
         for (const url of urlListSplit) {
           try {
@@ -53,7 +55,6 @@ const tiktokdlController = {
 
         await Promise.all(promises);
         await deleteGD(fileatGD.fileId);
-        // return data;
         success(res, {
           code: 200,
           status: 'success',
