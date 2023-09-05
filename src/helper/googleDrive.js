@@ -6,13 +6,9 @@ import crypto from 'crypto';
 import path from 'path';
 
 const scopes = ['https://www.googleapis.com/auth/drive'];
-const private_key = process.env.PRIVATE_KEY;
-const client = new google.auth.JWT(
-  process.env.EMAIL,
-  null,
-  private_key,
-  scopes
-);
+const privateKey = process.env.PRIVATE_KEY;
+const email = process.env.EMAIL;
+const client = new google.auth.JWT(email, null, privateKey, scopes);
 const GoogleDrive = {
   uploadGD: async (file) => {
     try {
