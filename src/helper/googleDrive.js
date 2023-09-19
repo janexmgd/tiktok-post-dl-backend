@@ -6,7 +6,7 @@ import crypto from 'crypto';
 import path from 'path';
 
 const scopes = ['https://www.googleapis.com/auth/drive'];
-const privateKey = process.env.PRIVATE_KEY;
+const privateKey = process.env.PRIVATE_KEY.split(String.raw`\n`).join('\n');
 const email = process.env.EMAIL;
 const client = new google.auth.JWT(email, null, privateKey, scopes);
 const GoogleDrive = {
